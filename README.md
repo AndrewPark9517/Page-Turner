@@ -9,7 +9,7 @@ Wanted to help people find good books to read
 
 ## Screenshots
 Home Page:
-![home page image](screeshots/homePage.png)
+![home page image](screenshots/homePage.png)
 
 Search Results Display: (User can click on a book to see book information)
 ![book list image](screenshots/bookList.png) 
@@ -19,8 +19,8 @@ Book Overview:
 
 ## Technology Used:
 ### Front-End:
-    * HTML
-    * CSS
-    * JavaScript
-    * JQuery
+    1. HTML
+    2. CSS
+    3. JavaScript
+    4. JQuery
 
