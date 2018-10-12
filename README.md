@@ -4,10 +4,10 @@ Easy to use book review search application. Users can find both critic and reade
 
 Link to live page: https://andrewpark9517.github.io/Page-Turner/
 
-##Motivation
+## Motivation
 Wanted to help people find good books to read
 
-##Screenshots
+## Screenshots
 Home Page:
 ![home page image](screeshots/homePage.png)
 
@@ -17,8 +17,8 @@ Search Results Display: (User can click on a book to see book information)
 Book Overview:
 ![book list image](screenshots/bookOverview.png) 
 
-##Technology Used:
-###Front-End:
+## Technology Used:
+### Front-End:
     * HTML
     * CSS
     * JavaScript
