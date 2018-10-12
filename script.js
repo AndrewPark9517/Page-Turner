@@ -169,9 +169,9 @@ function getBooksList(params) {
 
 //watch for search input and call getBooksList to display search results
   function watchSearchForm() {
-    $('.page-controls').hide();
   $('.js-search-form').submit(event => {
     event.preventDefault();
+    $('.welcome').css("display","none");
     //to reset the startIndex value each time a new search is made
     startIndex = 0;
     $('.js-book-overview').hide();
@@ -200,8 +200,6 @@ function emptyBookOverview () {
   $('.js-error-message').css('display','none');
   $('.critic-review-section').css("display","none");
 }
-
-//have to cover still edge cases for when the display values are unavailable
 
 function displayBookCover (googleBooksJson) {
   $('.js-book-cover').append(`<img src ="" class = "book-cover" alt = "Cover of Chosen Book"><figcaption class = "book-caption"></figcaption>`);
@@ -352,11 +350,27 @@ function displayBookOverview () {
   })
 }
 
-$(displayBookOverview);
-$(handleListMore);
-$(handleListPrev);
-$(watchSearchForm);
+function welcome () {
+  $('.welcome').fadeIn("slow");
+}
 
+//this will restart the quiz
+function restartPage() {
+  $('body').on('click', '.restartButton', function (event) {
+    location.reload();
+  });
+  }
+
+function createApp() {
+welcome();
+displayBookOverview();
+handleListMore();
+handleListPrev();
+watchSearchForm();
+restartPage();
+}
+
+$(createApp);
 
 /*
 Google API search Examples:

@@ -6,6 +6,12 @@ body {
   font-family: 'Catamaran', Sans-Serif;
 }
 
+.welcome {
+  text-align: center;
+  margin-top:3em; 
+  display: none;
+}
+
 .js-book-overview, .js-choose-book-section {
   max-width: 1000px;
   margin-left: auto;
@@ -135,6 +141,7 @@ ul {
 }
 
 .page-controls {
+  display:none;
   background-color: #FFF5EE;
   border-top: 2px solid #FAEBD7;
   margin-top:0;
@@ -201,6 +208,10 @@ h1, .js-search-form {
 
 figure {
   margin-bottom:0;
+}
+
+.restartButton:hover {
+  cursor: pointer;
 }
 
 @media only screen and (min-width: 650px) {
