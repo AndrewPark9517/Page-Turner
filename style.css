@@ -132,6 +132,7 @@ ul {
 
 .js-next-button:hover, .js-prev-button:hover {
   text-decoration:underline;
+  cursor: pointer;
 }
 
 .page-controls-button-next, .page-controls-button-prev {

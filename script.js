@@ -241,6 +241,7 @@ function displayBookCaption (googleBooksJson) {
   }  
 }
 
+//displays rating/5.0 from readers
 function displayReaderScore (googleBooksJson) {
   $('.reader-rating').prepend(`<h3>Reader Rating</h3><p class = "reader-score"> </p>`);
   if (googleBooksJson.volumeInfo.averageRating) {
@@ -285,6 +286,7 @@ function getCriticResponse (googleBooksJson) {
   }); 
 }
 
+//displays the rating/5.0 for given book (from critics)
 function displayCriticScore (rating, ratingsCount) {
   $('.critic-rating').prepend(`<h3>Critic Rating</h3><p class = "critic-score">`);
   if(rating) {
@@ -300,10 +302,12 @@ function displayCriticScore (rating, ratingsCount) {
 }
 
 function displayCriticReview (iDreamBooksJson) {
-  //double condition since the critic_reviews key seems to exist even if there are no reviews. However, in case there are some books with no critic_reviews key, I"m adding the first condition to check if it exists first
+  //double condition since the critic_reviews key seems to exist even if there are no reviews. 
+  //However, in case there are some books with no critic_reviews key, I"m adding the first condition to check if it exists first
   if (iDreamBooksJson.book.critic_reviews && iDreamBooksJson.book.critic_reviews.length != 0) {
     $('.critic-review-section').css("display","block");
     $('.critic-review-section').prepend(`<h3>Reviews</h3>`);
+
     for(let i = 0;i < iDreamBooksJson.book.critic_reviews.length;i++) {
       $('.critic-review-section').append(`
       <article class = "critic-review">\u201C${iDreamBooksJson.book.critic_reviews[i].snippet}\u201D<br>
@@ -354,7 +358,7 @@ function welcome () {
   $('.welcome').fadeIn("slow");
 }
 
-//this will restart the quiz
+//this will restart the app
 function restartPage() {
   $('body').on('click', '.restartButton', function (event) {
     location.reload();
@@ -372,15 +376,6 @@ restartPage();
 
 $(createApp);
 
-/*
-Google API search Examples:
-
-General Search URL example:
-https://www.googleapis.com/books/v1/volumes?q=search+terms
-
-Specific Volume search example: 
-https://www.googleapis.com/books/v1/volumes/volumeId
-*/
 
 
 
