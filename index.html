@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Page Turner</title>
+    <link href="https://fonts.googleapis.com/css?family=Catamaran|Lato:400i" rel="stylesheet">
+    <link href="normalize.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+      <section class = "search-section" role="region">
+      <h1> Page Turner </h1>
+      <form class = "js-search-form">
+        <label for = "initial-search"> Search: </label>
+        <div class = "search-bar">
+          <input type = "text" class = "initial-search-title"     Placeholder = "Book Title">
+          <input type = "image" src =     "https://cdn0.iconfinder.com/data/icons/education-8/512/Book_search-512.png" alt = "Search" class =   "initial-search-icon">
+        </div>
+      </form>
+    </section>
+    <main role="main">
+      <section class = "js-book-overview" role="region">
+        <div class="book-overview-noreviews">
+          <figure class = "js-book-cover">
+          </figure>
+          <section class="book-description"></section>
+          <section class="rating-section" role="region">
+            <article class="critic-rating rating"></article>
+            <article class="reader-rating rating"></article>
+          </section>
+        </div>
+        <section class = "critic-review-section" role="region">
+        </section>
+      </section>
+      <section class = "js-choose-book-section" role="region">
+        <ul class = "book-choice-list">
+        </ul>
+      </section>
+      <p class = "page-controls">
+          <span class="page-controls-button-prev"><a href="#" class = "js-prev-button"><<< prev</a><span>
+          <span class = "page-controls-button-next"><a href="#" class = "js-next-button">next >>></a><span>
+        </p>
+      <section class = "js-error-message" role="region"></section>
+    </main>
+      <script src="script.js"></script>
+  </body>
+</html>
