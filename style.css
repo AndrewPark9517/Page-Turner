@@ -215,6 +215,20 @@ figure {
   cursor: pointer;
 }
 
+.instruction {
+  position:absolute;
+  left: 4em;
+  top: 8em;
+  display: flex;
+  flex-direction:column;
+  align-items:top;
+}
+
+.instruction h4 {
+  margin-top: .5em;
+}
+
+
 @media only screen and (min-width: 650px) {
 
   .js-book-overview {

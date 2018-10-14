@@ -178,6 +178,7 @@ function getBooksList(params = {}) {
   $('.js-search-form').submit(event => {
     event.preventDefault();
     $('.welcome').css('display','none');
+    $('.instruction').css('display','none');
     //to reset the startIndex value each time a new search is made
     startIndex = 0;
     $('.js-book-overview').hide();
@@ -374,7 +375,10 @@ function displayBookOverview() {
 }
 
 function welcome() {
-  $('.welcome').fadeIn('slow');
+  $('.instruction').hide();
+  $('.welcome').fadeIn(1000, function() {
+    $('.instruction').fadeIn(1000);
+  });
 }
 
 // this will restart the app
