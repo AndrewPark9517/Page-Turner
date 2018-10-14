@@ -1,59 +1,61 @@
-const googleBooksBaseURL = "https://www.googleapis.com/books/v1/volumes";
-const iDreamBooksBaseURL = "https://idreambooks.com/api/books/reviews.json";
-const iDreamBooksFeaturedURL = "https://idreambooks.com/api/publications/recent_recos.json"
-const googleKey = "AIzaSyCf10M7NQ3hEvwUNu-4O4gxUwQFCyPAah0";
-const iDreamBooksKey = "cdea63065cace2724489b736b7714ddf78e909f1";
-//start index to display books amongst the array of books returned by google api
-let startIndex = 0;
-//number of books to return per fetch call
+const googleBooksBaseURL = 'https://www.googleapis.com/books/v1/volumes';
+const iDreamBooksBaseURL = 'https://idreambooks.com/api/books/reviews.json';
+const iDreamBooksFeaturedURL = 'https://idreambooks.com/api/publications/recent_recos.json'
+const googleKey = 'AIzaSyCf10M7NQ3hEvwUNu-4O4gxUwQFCyPAah0';
+const iDreamBooksKey = 'cdea63065cace2724489b736b7714ddf78e909f1';
+// number of books to return per fetch call
 const maxResults = 20;
-//length of array returned by google books for search, arbitrarily set to 100
+// start index to display books amongst the array of books returned by google api
+let startIndex = 0;
+// length of array returned by google books for search, arbitrarily set to 100
 let bookArrayLimit = 100;
-//need an array to hold the book ID's due to the google api not returning
-//the same JSON file (for general volumes search) even with the same query. 
+/* need an array to hold the book ID's due to the google api not returning
+ * the same JSON file (for general volumes search) even with the same query. */
 let bookIdList = [];
 
 
-//form query string (which will be added to google base url) for initial volumes search
-function getQueryString(params) {
+// form query string (which will be added to google base url) for initial volumes search
+function getQueryString(params = {}) {
   const queryString = Object.keys(params).map(keys => {
-    return `${encodeURIComponent(keys)}=${encodeURIComponent(params[keys])}`;
+    return `${encodeURIComponent(keys)} = ${encodeURIComponent(params[keys])}`;
   })
 
   return queryString.join('&');
 }
 
 
-function displayBooksList(googleBooksJson) {
+function displayBooksList(googleBooksJson = {}) {
   $('.book-choice-list').empty();
   $('.js-error-message').empty();
 
   for(let i = 0 ;i < googleBooksJson.items.length;i++) {
-    //if thumbnail is available from API
-    if(googleBooksJson.items[i].volumeInfo.imageLinks) {
+    // if thumbnail is available from API
+    if (googleBooksJson.items[i].volumeInfo.imageLinks) {
       $('.book-choice-list').append(`
-      <li data-book-index=${i} class = "book-list-item">
-      <img class = "book-list-item-thumbnail" 
-      src = ${googleBooksJson.items[i]  .volumeInfo.imageLinks.smallThumbnail} alt = "book image">
+      <li data-book-index=${i} class = 'book-list-item'>
+      <img class = 'book-list-item-thumbnail' 
+      src = ${googleBooksJson.items[i].volumeInfo.imageLinks.smallThumbnail} alt = 'book image'>
       <h4>${googleBooksJson.items[i].volumeInfo.title}</h4></li>`);
     }
-    //if thumbnail is not available, provide "not availalbe" image
+
+    // if thumbnail is not available, provide 'not availalbe' image
     else {
       $('.book-choice-list').append(`
-      <li data-book-index=${i} class = "book-list-item">
-      <img class = "book-list-item-notavail" src = "img/imgNotAvail.jpg" 
-      alt = "book image">
+      <li data-book-index=${i} class = 'book-list-item'>
+      <img class = 'book-list-item-notavail' src = 'img/imgNotAvail.jpg' 
+      alt = 'book image'>
       <h4>${googleBooksJson.items[i].volumeInfo.title}</h4></li>`);
     }
   }
 }
 
-//function to handle prev button in book list display
+// function to handle prev button in book list display
 function handleListPrev() {
   $('.js-prev-button').click(event => {
     if(startIndex - maxResults >= 0) {
       startIndex -= maxResults; 
     }
+
     else {
       startIndex = 0;
     }
@@ -61,22 +63,23 @@ function handleListPrev() {
     const userSearchTitle = $('.initial-search-title').val();
     const params = {
       q: userSearchTitle,
-      printType: "books",
+      printType: 'books',
       key: googleKey,
-      "maxResults": maxResults,
-      "startIndex": startIndex
+      'maxResults': maxResults,
+      'startIndex': startIndex
   };
 
     getBooksList(params);
   });
 }
 
-//function to handle more button in book list display
-function handleListMore () {
+// function to handle more button in book list display
+function handleListMore() {
   $('.js-next-button').click(event => {
     if(startIndex + maxResults <= bookArrayLimit) {
       startIndex += maxResults; 
     }
+
     else {
       startIndex = startIndex;
     }
@@ -84,22 +87,23 @@ function handleListMore () {
     const userSearchTitle = $('.initial-search-title').val();
     const params = {
       q: userSearchTitle,
-      printType: "books",
+      printType: 'books',
       key: googleKey,
-      "maxResults": maxResults,
-      "startIndex": startIndex
+      'maxResults': maxResults,
+      'startIndex': startIndex
   };
 
     getBooksList(params);
   });
 }
 
-function toggleNextButton (googleBooksJson) {
+function toggleNextButton (googleBooksJson = {}) {
   if(bookArrayLimit > startIndex + maxResults) {
       $('.js-next-button').show();
     }
+
   else $('.js-next-button').hide();
-  //ideally the above code would be enough to determine when tohide the next button but the google api is not consistent
+  // ideally the above code would be enough to determine when tohide the next button but the google api is not consistent
   if(googleBooksJson.items.length < maxResults) {
       $('.js-next-button').hide();
     }
@@ -109,33 +113,34 @@ function togglePrevButton () {
   if (startIndex == 0 || startIndex - maxResults < 0) {
     $('.js-prev-button').hide()
   }
+
   else {
     $('.js-prev-button').show();
   }
 
 }
 
-//for instantaneous scroll from next/prev button to top 
-$("a").click(function() {
+// for instantaneous scroll from next/prev button to top 
+$('a').click(function() {
      window.scrollTo(0,0);
 });
 
-//for smooth scroll when a book is chosen to view
-$(".book-choice-list").on("click", ".book-list-item", function() {
-     $("html, body").animate({ scrollTop: 0 }, "medium");
+// for smooth scroll when a book is chosen to view
+$('.book-choice-list').on('click', '.book-list-item', function() {
+     $('html, body').animate( { scrollTop: 0 }, 'medium');
      return false;
 });
 
-//function to fill bookIdList
-function fillBookIdList (googleBooksJson) {
+// function to fill bookIdList
+function fillBookIdList(googleBooksJson = {}) {
   bookIdList.length = 0;
   for(let i = 0;i < googleBooksJson.items.length;i++) {
     bookIdList.push(googleBooksJson.items[i].id);
   }
 }
 
-//fetches json response from google books API and calls displayBooksList function
-function getBooksList(params) {
+// fetches json response from google books API and calls displayBooksList function
+function getBooksList(params = {}) {
   const queryString = getQueryString(params);
   const googleSearchURL = googleBooksBaseURL + '?' + queryString;
   $('.js-choose-book-section').show();
@@ -145,6 +150,7 @@ function getBooksList(params) {
       if(googleBooks.ok) {
         return googleBooks.json();
       }
+
       throw new Error(googleBooks.statusText);
       })
     .then(googleBooksJson => {
@@ -167,21 +173,21 @@ function getBooksList(params) {
     });
   }
 
-//watch for search input and call getBooksList to display search results
+// watch for search input and call getBooksList to display search results
   function watchSearchForm() {
   $('.js-search-form').submit(event => {
     event.preventDefault();
-    $('.welcome').css("display","none");
+    $('.welcome').css('display','none');
     //to reset the startIndex value each time a new search is made
     startIndex = 0;
     $('.js-book-overview').hide();
     const userSearchTitle = $('.initial-search-title').val();
     const params = {
       q: userSearchTitle,
-      printType: "books",
+      printType: 'books',
       key: googleKey,
-      "maxResults": maxResults,
-      "startIndex": startIndex
+      'maxResults': maxResults,
+      'startIndex': startIndex
     };
 
     getBooksList(params);
@@ -189,7 +195,7 @@ function getBooksList(params) {
   });
 }
 
-function emptyBookOverview () {
+function emptyBookOverview() {
   $('.js-book-overview').hide();
   $('.js-book-cover').empty();
   $('.book-description').empty();
@@ -198,36 +204,40 @@ function emptyBookOverview () {
   $('.critic-rating').empty();
   $('.critic-review-section').empty();
   $('.js-error-message').css('display','none');
-  $('.critic-review-section').css("display","none");
+  $('.critic-review-section').css('display','none');
 }
 
-function displayBookCover (googleBooksJson) {
-  $('.js-book-cover').append(`<img src ="" class = "book-cover" alt = "Cover of Chosen Book"><figcaption class = "book-caption"></figcaption>`);
+function displayBookCover(googleBooksJson = {}) {
+  $('.js-book-cover').append(`<img src ='' class = 'book-cover' 
+  alt = 'Cover of Chosen Book'><figcaption class = 'book-caption'></figcaption>`);
   if(googleBooksJson.volumeInfo.imageLinks) {
     const coverURL = googleBooksJson.volumeInfo.imageLinks.thumbnail;
     $('.book-cover').attr('src', coverURL); 
   }
+
   else {
-    $('.book-cover').attr('src', "img/imgNotAvail.jpg");
+    $('.book-cover').attr('src', 'img/imgNotAvail.jpg');
   }
 }
 
-function displayBookDesc (googleBooksJson) {
+function displayBookDesc(googleBooksJson = {}) {
   $('.book-description').prepend(`<h4>Synopsis</h4>`)
   if(googleBooksJson.volumeInfo.description) {
     const bookDesc = googleBooksJson.volumeInfo.description;
     $('.book-description').append(bookDesc);
   }
+
   else {
     $('.book-description').append(`<i>Summary not available<i>`);
   }
 }
 
-function displayBookCaption (googleBooksJson) {
+function displayBookCaption(googleBooksJson = {}) {
   if (googleBooksJson.volumeInfo.authors) {
     const authors = googleBooksJson.volumeInfo.authors.join(' & ');
     $('.book-caption').append(`<p>Author(s): ${authors}</p>`);
   } 
+
   else {
     $('.book-caption').append(`<p>Author(s): <i>Not Available</i></p>`);
   }
@@ -236,27 +246,29 @@ function displayBookCaption (googleBooksJson) {
      const pubDate = googleBooksJson.volumeInfo.publishedDate;
      $('.book-caption').append(`<p>Published Date: ${pubDate}</p>`);
   }
+
   else {
     $('.book-caption').append(`<p>Published Date: <i>Not Available</i></p>`);
   }  
 }
 
-//displays rating/5.0 from readers
-function displayReaderScore (googleBooksJson) {
-  $('.reader-rating').prepend(`<h3>Reader Rating</h3><p class = "reader-score"> </p>`);
+// displays rating/5.0 from readers
+function displayReaderScore(googleBooksJson = {}) {
+  $('.reader-rating').prepend(`<h3>Reader Rating</h3><p class = 'reader-score'> </p>`);
   if (googleBooksJson.volumeInfo.averageRating) {
     const readerScore = (googleBooksJson.volumeInfo.averageRating).toFixed(1);
     $('.reader-score').append(`${readerScore}/5.0`);
     const ratingsCount = googleBooksJson.volumeInfo.ratingsCount;
-    $('.reader-rating').append(`<span class = "ratings-count">${ratingsCount} reviews</span>`);
+    $('.reader-rating').append(`<span class = 'ratings-count'>${ratingsCount} reviews</span>`);
   }
+
   else {
     $('.reader-score').append(`<i>No Ratings</i>`);
   }
 }
 
-//calls iDreamBooks API for critic review/rating JSON file
-function getCriticResponse (googleBooksJson) {
+// calls iDreamBooks API for critic review/rating JSON file
+function getCriticResponse(googleBooksJson = {}) {
   const bookTitle = googleBooksJson.volumeInfo.title;
   const params = {
     q: bookTitle,
@@ -273,6 +285,7 @@ function getCriticResponse (googleBooksJson) {
     if(iDreamBooks.ok) {
       return iDreamBooks.json();
     }
+
     throw new Error(iDreamBooks.statusText);
   })
   .then(iDreamBooksJson => {
@@ -286,39 +299,44 @@ function getCriticResponse (googleBooksJson) {
   }); 
 }
 
-//displays the rating/5.0 for given book (from critics)
-function displayCriticScore (rating, ratingsCount) {
-  $('.critic-rating').prepend(`<h3>Critic Rating</h3><p class = "critic-score">`);
-  if(rating) {
+// displays the rating/5.0 for given book (from critics)
+function displayCriticScore(rating = 0, ratingsCount = 0) {
+  $('.critic-rating').prepend(`<h3>Critic Rating</h3><p class = 'critic-score'>`);
+  if(rating > 0) {
     let ratingOfFive = (rating/20).toFixed(1); 
     $('.critic-score').append(`${ratingOfFive}/5.0`);
   }
+
   else {
     $('.critic-score').append(`<i>No Ratings</i>`);
   }
-  if(ratingsCount) {
-    $('.critic-rating').append(`<span class = "ratings-count">${ratingsCount} reviews</span>`);
+
+  if(ratingsCount > 0) {
+    $('.critic-rating').append(`<span class = 'ratings-count'>${ratingsCount} reviews</span>`);
   }
 }
 
-function displayCriticReview (iDreamBooksJson) {
-  //double condition since the critic_reviews key seems to exist even if there are no reviews. 
-  //However, in case there are some books with no critic_reviews key, I"m adding the first condition to check if it exists first
-  if (iDreamBooksJson.book.critic_reviews && iDreamBooksJson.book.critic_reviews.length != 0) {
-    $('.critic-review-section').css("display","block");
+function displayCriticReview(iDreamBooksJson = {}) {
+  /* double condition since the critic_reviews key seems to exist even if there are no reviews. 
+   * However, in case there are some books with no critic_reviews key, 
+   * I'm adding the first condition to check if it exists first*/
+  if (
+    iDreamBooksJson.book.critic_reviews 
+    && iDreamBooksJson.book.critic_reviews.length != 0) {
+    $('.critic-review-section').css('display','block');
     $('.critic-review-section').prepend(`<h3>Reviews</h3>`);
 
     for(let i = 0;i < iDreamBooksJson.book.critic_reviews.length;i++) {
       $('.critic-review-section').append(`
-      <article class = "critic-review">\u201C${iDreamBooksJson.book.critic_reviews[i].snippet}\u201D<br>
-      <i><span class = "critic-review-source">-${iDreamBooksJson.book.critic_reviews[i].source}</span></i>
+      <article class = 'critic-review'>\u201C${iDreamBooksJson.book.critic_reviews[i].snippet}\u201D<br>
+      <i><span class = 'critic-review-source'>-${iDreamBooksJson.book.critic_reviews[i].source}</span></i>
       </article>`);
     }
   }
 }
 
-//displays summary/review of chosen book from list
-function displayBookOverview () {
+// displays summary/review of chosen book from list
+function displayBookOverview() {
   $('.js-book-overview').hide();
   $('.js-choose-book-section').hide();
 
@@ -328,6 +346,7 @@ function displayBookOverview () {
   const params = {
     key: googleKey,
   };
+
   const queryString = getQueryString(params);
   const googleSearchURL = googleBooksBaseURL + `/${bookIdList[bookIndex]}` + '?' + queryString;
 
@@ -354,24 +373,24 @@ function displayBookOverview () {
   })
 }
 
-function welcome () {
-  $('.welcome').fadeIn("slow");
+function welcome() {
+  $('.welcome').fadeIn('slow');
 }
 
-//this will restart the app
+// this will restart the app
 function restartPage() {
   $('body').on('click', '.restartButton', function (event) {
     location.reload();
   });
-  }
+}
 
 function createApp() {
-welcome();
-displayBookOverview();
-handleListMore();
-handleListPrev();
-watchSearchForm();
-restartPage();
+  welcome();
+  displayBookOverview();
+  handleListMore();
+  handleListPrev();
+  watchSearchForm();
+  restartPage();
 }
 
 $(createApp);
