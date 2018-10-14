@@ -17,7 +17,7 @@ let bookIdList = [];
 // form query string (which will be added to google base url) for initial volumes search
 function getQueryString(params = {}) {
   const queryString = Object.keys(params).map(keys => {
-    return `${encodeURIComponent(keys)} = ${encodeURIComponent(params[keys])}`;
+    return `${encodeURIComponent(keys)}=${encodeURIComponent(params[keys])}`;
   })
 
   return queryString.join('&');
