@@ -169,6 +169,7 @@ function getBooksList(params = {}) {
       $('.js-book-overview').hide();
       $('.page-controls').hide();
       $('.js-error-message').css('display','block');
+      $('.js-error-message').empty();
       $('.js-error-message').append(`No Results Found: Please try again</p>`);
     });
   }
@@ -384,6 +385,10 @@ function welcome() {
 // this will restart the app
 function restartPage() {
   $('body').on('click', '.restartButton', function (event) {
+    location.reload();
+  });
+  
+  $('body').on('click', '.favicon', function(event) {
     location.reload();
   });
 }
